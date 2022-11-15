@@ -4,5 +4,9 @@
         <members>Account.Test_Email__c</members>
         <name>CustomField</name>
     </types>
+    <types>
+        <members>Account</members>
+        <name>CustomObject</name>
+    </types>
     <version>54.0</version>
 </Package>
