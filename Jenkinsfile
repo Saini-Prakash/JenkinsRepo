@@ -1,38 +1,55 @@
-pipeline{
-            agent any
-            environment{
-                SF_ORG_AUTH_URL = credentials('SF_ORG_AUTH_URL')
-                GIT_USERNAME = credentials('GIT_USERNAME')
-            }
-            stages {
-                    stage('feature') {
-                            when {
-                                allOf{
-                                branch 'feature/*'
-                                // changeset "force-app/**"
-                                }
-                            }
-                        stages{
-                                stage('validate_against_QA'){
-                                    agent any
-                                    steps {
-                                         withCredentials([usernamePassword(credentialsId: 'a1be5577-684d-4e8c-b9db-0afe99a36c37', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USER')]) {
-                                            sh 'git config http.sslVerify "false"'
-                                            sh 'git config credential.username "${GIT_USER}"'
-                                            sh(returnStdout: true, script: 'git config credential.helper "!echo password=${GIT_PASSWORD}; echo"')
-                                            script{
-                                                fetch_all_tags = sh(script: 'git fetch --tags', , returnStdout: true).trim()
-                                                qa_tag = sh(script: 'git describe --match "qa-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
+pipeline {
+    agent any
+    environment {
+        SF_DEPLOY__ENABLED = true
+        GIT_USERNAME = credentials('GIT_USERNAME')
+        SF_ORG__QA__AUTH_URL = credentials('SF_ORG__QA__AUTH_URL')
+        SF_ORG__UAT__AUTH_URL = credentials('SF_ORG__UAT__AUTH_URL')
+        SF_ORG__PREPROD__AUTH_URL = credentials('SF_ORG__PREPROD__AUTH_URL')
+        SF_ORG__PROD__AUTH_URL = credentials('SF_ORG__PROD__AUTH_URL')
+        SF_ORG__FULL__AUTH_URL = credentials('SF_ORG__FULL__AUTH_URL')
+    }
+    stages {
+     stage('feature') {
+            when {
+              allOf{
+                branch 'feature/*'
+                // changeset "force-app/**"
+              }
+              }
+            stages{
+                stage('validate_against_QA'){
+                    agent {
+	                    docker {
+	                        image '$DELTA_DEPLOY_IMAGE'
+                            args '-v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /appl/jenkins/workspace:/appl/jenkins:rw'
+	                    }
+                    }
+                    steps {
+                        withCredentials([usernamePassword(credentialsId: 'ccadmin', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USER')]) {
+                            sh 'git config http.sslVerify "false"'
+                            sh 'git config credential.username "${GIT_USER}"'
+                            sh(returnStdout: true, script: 'git config credential.helper "!echo password=${GIT_PASSWORD}; echo"')
+                            script{
+                                fetch_all_tags = sh(script: 'git fetch --tags', , returnStdout: true).trim()
+                                qa_tag = sh(script: 'git describe --match "qa-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
     
-                                            }
-                                            sh "sfdx --version"
-                                            //sh "echo $SF_ORG_AUTH_URL > authURLFile"
-                                            //sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a QA"
-                                            }
-                                            
-                                        }
-                                }
+                            }
+                            sh "echo $SF_ORG__QA__AUTH_URL > authURLFile"
+                            sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a QA"
+                            sh "sfdx sgd:source:delta --from $qa_tag --to HEAD --output . --ignore .packageignore"
+                            sh 'echo "--- package.xml generated with added and modified metadata from $qa_tag"'
+                            sh "cat package/package.xml"
+                            sh "sfdx force:source:deploy -x package/package.xml --checkonly --testlevel NoTestRun"
+                            sh 'echo "--- destructiveChanges.xml generated with deleted metadata"'
+                            sh "cat destructiveChanges/destructiveChanges.xml"
+                            sh "sfdx force:mdapi:deploy -d destructiveChanges --checkonly --ignorewarnings --wait 10"
                         }
                     }
                 }
+            }
+        }
+    }
 }
+
+
