@@ -3,7 +3,7 @@
     <fullName>ABFExpirationDate__c</fullName>
     <externalId>false</externalId>
     <label>ABF Expiration Date</label>
-    <required>Yes</required>
+    <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
     <type>Date</type>
 </CustomField>
