@@ -20,6 +20,20 @@ pipeline
                     }
                 }
             }
-            
+            stage('release'){
+                when{
+                    allOf{
+                        branch 'release/*'
+                }
+            }
+            stages{
+                stage('Validate_Against_QA'){
+                        steps{
+                            echo 'This is QA Branch'                        
+                        }
+                    }
+                }
+            }
+       
         }
     }
