@@ -4,7 +4,7 @@ pipeline
         stages{
             stage(feature){
                 when{
-                    allof{
+                    allOf{
                         branch 'feature/*'
                 }
             }
