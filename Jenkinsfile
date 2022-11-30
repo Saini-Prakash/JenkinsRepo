@@ -29,7 +29,8 @@ pipeline
             stages{
                 stage('Validate_Against_QA'){
                         steps{
-                            echo 'This is QA Branch'                        
+                            echo 'This is QA Branch'
+                            sh 'git --version'                       
                         }
                     }
                 }
