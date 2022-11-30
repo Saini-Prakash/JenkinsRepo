@@ -10,11 +10,11 @@ pipeline
             }
             stages{
                 stage('Validate_Against_Dev'){
-                    agent any{
+                    agent any
                         steps{
                             echo 'Hello'
                             sh 'git config http.sslVerify "false"'
-                        }
+                        
                     }
                 }
             }
