@@ -14,15 +14,11 @@ pipeline
             }
             stages{
                 stage('Validate_Against_Dev'){
-                    agent any
                         steps{
-                            echo 'Hello'
-                            git --version
-                            sfdx --version
-                        
+                            echo 'Hello'                        
+                        }
                     }
                 }
-            }
             }
             
         }
