@@ -17,4 +17,8 @@ steps:
 
 - script:
       npm install sfdx-cli --global
-  displayName: 'Install Salesforce CLI and Git Delta'
+  displayName: 'Install Salesforce CLI'
+
+- script:
+      sfdx plugins:install sfdx-git-delta
+  displayName: 'Install Git Delta'
