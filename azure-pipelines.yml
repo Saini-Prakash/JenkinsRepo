@@ -22,3 +22,7 @@ steps:
 - script:
       echo 'Y'| sfdx plugins:install sfdx-git-delta
   displayName: 'Install Git Delta'
+steps:
+  -bash:
+    
+
