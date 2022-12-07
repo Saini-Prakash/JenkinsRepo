@@ -15,7 +15,7 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
-- bash: : |
+- bash:
       npm install sfdx-cli --global
       echo 'y' | sfdx plugins:install sfdx-git-delta
   displayName: 'Install Salesforce CLI and Git Delta'
