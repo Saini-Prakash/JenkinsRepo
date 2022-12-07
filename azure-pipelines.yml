@@ -24,5 +24,6 @@ steps:
   displayName: 'Install Git Delta'
 steps:
   -bash:
-    
+  sfdx force:auth:sfdxurl:store $(DevAuthURL) -s -a DEV --instanceurl $(TestLogin)
+
 
