@@ -26,7 +26,7 @@ steps:
     sfdx force:auth:sfdxurl:store -f Org_Credentials -s -a DevOrg
   displayName: 'Authorize the Dev Org'
 - script:
-    sfdx sgd:source:delta --from HEAD~1 --to HEAD --output . --ignore .packageignore
+    sfdx sgd:source:delta --from "HEAD^" --to "HEAD" --output . --ignore .packageignore
   displayName: 'Create Package.xml'
 - script:
     cat package/package.xml
