@@ -23,5 +23,5 @@ steps:
       echo 'Y'| sfdx plugins:install sfdx-git-delta
   displayName: 'Install Git Delta'
 - script:
-    sfdx force:auth:sfdxurl:store -f $(DevAuthURL) -s -a DEV --instanceurl $(TestLogin)
+    sfdx force:auth:sfdxurl:store -f Org_Credentials -s -a DevOrg
   displayName: 'Authorize the Dev Org'
