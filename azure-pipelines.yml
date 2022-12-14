@@ -4,13 +4,24 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- main
+    branches:
+        include:
+        - main
+        - feature/*
+        - release/*
+        - QA
+        - SIT
+        - UAT
+        exclude:
+        - backup/*
+        - releases/*
+        - release/*
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- checkout: self
+
 - task: NodeTool@0
   inputs:
     versionSpec: '18.x'
@@ -29,7 +40,7 @@ steps:
 
 - script:
     sfdx sgd:source:delta --to HEAD --from HEAD^ --output .
-  displayName: 'Create Package.xml'
+  displayName: 'Calculate Delta package'
 - script:
     cat package/package.xml
   displayName: 'Print Package.xml'
