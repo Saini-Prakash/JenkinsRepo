@@ -10,6 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- checkout: self
 - task: NodeTool@0
   inputs:
     versionSpec: '18.x'
@@ -25,6 +26,7 @@ steps:
 - script:
     sfdx force:auth:sfdxurl:store -f Org_Credentials -s -a DevOrg
   displayName: 'Authorize the Dev Org'
+
 - script:
     sfdx sgd:source:delta --to HEAD --from HEAD^ --output .
   displayName: 'Create Package.xml'
