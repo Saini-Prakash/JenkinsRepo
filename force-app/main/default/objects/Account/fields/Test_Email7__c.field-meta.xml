@@ -4,7 +4,7 @@
     <caseSensitive>true</caseSensitive>
     <externalId>true</externalId>
     <label>Test Email7</label>
-    <trackFeedHistory>false</trackFeedHistory>
+    <trackFeedHistory>false</trackFeedHistory
     <type>Email</type>
     <unique>true</unique>
 </CustomField>
