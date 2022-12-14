@@ -4,12 +4,24 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- main
+    branches:
+        include:
+        - main
+        - feature/*
+        - release/*
+        - QA
+        - SIT
+        - UAT
+        exclude:
+        - backup/*
+        - releases/*
+        - release/*
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
+
 - task: NodeTool@0
   inputs:
     versionSpec: '18.x'
@@ -23,5 +35,15 @@ steps:
       echo 'Y'| sfdx plugins:install sfdx-git-delta
   displayName: 'Install Git Delta'
 - script:
-    sfdx force:auth:sfdxurl:store -f $(DevAuthURL) -s -a DEV --instanceurl $(TestLogin)
+    sfdx force:auth:sfdxurl:store -f Org_Credentials -s -a DevOrg
   displayName: 'Authorize the Dev Org'
+
+- script:
+    sfdx sgd:source:delta --to HEAD --from HEAD^ --output .
+  displayName: 'Calculate Delta package'
+- script:
+    cat package/package.xml
+  displayName: 'Print Package.xml'
+- script: 
+    sfdx force:source:deploy -x package/package.xml --testlevel NoTestRun
+  displayName: 'Deploy Code to Dev Org'
