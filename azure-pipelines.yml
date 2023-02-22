@@ -47,12 +47,3 @@ steps:
 - script: 
     sfdx force:source:deploy -x package/package.xml --testlevel NoTestRun -u DevOrg
   displayName: 'Deploy Code to Dev Org'
-- script: 
-    git config --global --add url."git@github.com:".insteadOf "https://github.com/
-  displayName: 'GIT URL Update'
-- script: 
-    git tag qa-20230124
-  displayName: 'Tag Created'
-- script: 
-    git push origin --tags
-  displayName: 'Tag pushed to remote'
