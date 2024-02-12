@@ -1,0 +1,15 @@
+﻿Activity,Link
+"How to Include images, documents, and attachments and Include Salesforce Files and Salesforce CRM Content document versions to include these items in your export data.",
+Formula and roll-up summary fields are always excluded from exports.,
+ Heavy traffic can delay an export delivery and time to completion may be variable.,
+,
+,
+q parameter in Data query is a REST API call,
+Data Export FAQ,https://help.salesforce.com/s/articleView?id=000383962&type=1
+SOQL Builder,https://developer.salesforce.com/tools/vscode/en/soql/writing
+Data Query Command,
+,
+,
+,
+sf data export tree ,Export data from an org into one or more JSON files.
+sf data query,Execute a SOQL query
