@@ -19,6 +19,23 @@ pipeline
                 }
             }
             }
+            stage(SIT){
+                when{
+                    allOf{
+                        branch 'SIT/*'
+                }
+            }
+            stages{
+                stage('Validate_Against_SIT'){
+                    agent any
+                        steps{
+                            echo 'Hello'
+                            sh 'git config http.sslVerify "false"'
+                        
+                    }
+                }
+            }
+            }
             
         }
     }
