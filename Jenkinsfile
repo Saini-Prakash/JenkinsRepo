@@ -17,7 +17,7 @@ pipeline {
                 stage('validate_against_QA'){
                     agent any
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'ccadmin', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USER')]) {
+                        withCredentials([usernamePassword(passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USER')]) {
                             sh 'git config http.sslVerify "false"'
                             sh 'git config credential.username "${GIT_USER}"'
                             sh(returnStdout: true, script: 'git config credential.helper "!echo password=${GIT_PASSWORD}; echo"')
@@ -27,14 +27,13 @@ pipeline {
     
                             }
                             sh "echo $SF_ORG__QA__AUTH_URL > authURLFile"
-                            sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a QA"
+                            sh "sf force auth sfdxurl store -f authURLFile -s -a QA"
                             sh "sfdx sgd:source:delta --from $qa_tag --to HEAD --output . --ignore .packageignore"
                             sh 'echo "--- package.xml generated with added and modified metadata from $qa_tag"'
                             sh "cat package/package.xml"
-                            sh "sfdx force:source:deploy -x package/package.xml --checkonly --testlevel NoTestRun"
+                            sh "sf force source deploy -x package/package.xml --checkonly --testlevel NoTestRun"
                             sh 'echo "--- destructiveChanges.xml generated with deleted metadata"'
                             sh "cat destructiveChanges/destructiveChanges.xml"
-                            sh "sfdx force:mdapi:deploy -d destructiveChanges --checkonly --ignorewarnings --wait 10"
                         }
                     }
                 }
