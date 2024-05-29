@@ -17,7 +17,7 @@ pipeline {
                 stage('validate_against_QA'){
                     agent any
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'ccadmin',passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USER')]) {
+                        withCredentials([usernamePassword(passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USER')]) {
                             sh 'git config http.sslVerify "false"'
                             sh 'git config credential.username "${GIT_USER}"'
                             sh(returnStdout: true, script: 'git config credential.helper "!echo password=${GIT_PASSWORD}; echo"')
