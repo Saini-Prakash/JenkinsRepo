@@ -22,10 +22,6 @@ pipeline {
                             sh 'git config http.sslVerify "false"'
                             sh 'git config credential.username "${GIT_USER}"'
                             sh(returnStdout: true, script: 'git config credential.helper "!echo password=${GIT_PASSWORD}; echo"')
-                            script{
-                                fetch_all_tags = sh(script: 'git fetch --tags', , returnStdout: true).trim()
-                                qa_tag = sh(script: 'git describe --match "qa-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
-    
                             }
                             sh "sf force auth sfdxurl store -f $Auth_URL -s -a QA"
                             sh "sfdx sgd:source:delta --from $qa_tag --to HEAD --output . --ignore .packageignore"
