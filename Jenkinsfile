@@ -29,7 +29,7 @@ pipeline {
                             }
                             sh "echo $SF_ORG__QA__AUTH_URL > authURLFile.txt"
                             sh "sf force auth sfdxurl store -f authURLFile.txt -s -a QA"
-                            #sh "sf auth sfdxurl store --sfdx-url-file $SF_ORG__QA__AUTH_URL --set-default -u prakash.saini@effem.com.mraqa"
+                            sh "sf auth sfdxurl store --sfdx-url-file $SF_ORG__QA__AUTH_URL --set-default -u prakash.saini@effem.com.mraqa"
                             sh "sfdx sgd:source:delta --from $qa_tag --to HEAD --output . --ignore .packageignore"
                             sh 'echo "--- package.xml generated with added and modified metadata from $qa_tag"'
                             sh "cat package/package.xml"
