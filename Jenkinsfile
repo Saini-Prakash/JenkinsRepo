@@ -27,7 +27,7 @@ pipeline {
                                 qa_tag = sh(script: 'git describe --match "qa-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
     
                             }
-                            sh "sf auth sfdxurl store --sfdx-url-file $SF_ORG__QA__AUTH_URL --set-default -u prakash.saini@effem.com.mraqa"
+                            sh "sf force auth sfdxurl store -f $Auth_URL -s -a QA"
                             sh "sfdx sgd:source:delta --from $qa_tag --to HEAD --output . --ignore .packageignore"
                             sh 'echo "--- package.xml generated with added and modified metadata from $qa_tag"'
                             sh "cat package/package.xml"
