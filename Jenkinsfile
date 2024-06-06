@@ -24,7 +24,6 @@ pipeline {
                             }
                             sf force auth sfdxurl store -f "$Auth_URL" -s -a QA
                             sfdx plugins:install sfdx-git-delta
-                            sfdx sgd:source:delta --from $qa_tag --to HEAD --output . --ignore .packageignore
                             echo "--- package.xml generated with added and modified metadata from $qa_tag
                             cat package/package.xml
                             sf force source deploy -x package/package.xml --checkonly --testlevel NoTestRun
