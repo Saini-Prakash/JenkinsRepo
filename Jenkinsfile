@@ -23,11 +23,17 @@ pipeline {
                             git config credential.username "${GIT_USER}"
                             }
                             sf force auth sfdxurl store -f "$Auth_URL" -s -a QA
-                            sfdx plugins:install sfdx-git-delta
+                        
+                            sfdx plugins:install sfdx-git-delta\
+                        
                             echo "--- package.xml generated with added and modified metadata from 
+                        
                             cat package/package.xml
+                        
                             sf force source deploy -x package/package.xml --checkonly --testlevel NoTestRun
+                        
                             echo "--- destructiveChanges.xml generated with deleted metadata"
+                        
                             cat destructiveChanges/destructiveChanges.xml
                         
                     }
