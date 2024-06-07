@@ -26,7 +26,7 @@ pipeline {
                         
                             sfdx plugins:install sfdx-git-delta\
                         
-                            echo "--- package.xml generated with added and modified metadata from 
+                            echo "--- package.xml generated with added and modified metadata from" 
                         
                             cat package/package.xml
                         
