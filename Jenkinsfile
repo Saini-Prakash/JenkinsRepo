@@ -19,8 +19,6 @@ pipeline {
                     agent any
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USER')]) {
-                            git config http.sslVerify "false"
-                            git config credential.username "${GIT_USER}"
                             }
                             echo 'destructiveChanges.xml generated with deleted metadata'
 
